@@ -34,3 +34,22 @@ export const userRegister = asyncHandler(async (req, res, next) => {
       token: generateToken(user._id)
     })
 });
+
+export const userLogin = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email }).select('+password');
+
+  if (!user || !(await user.matchPassword(password))) {
+    res.status(401)
+    throw new Error('Invalid email or password');
+  }
+
+  res.status(200)
+    .json({
+      _id: user._id,
+      eamil: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id)
+    })
+})
