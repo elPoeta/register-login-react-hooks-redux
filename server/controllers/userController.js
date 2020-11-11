@@ -3,9 +3,9 @@ import User from '../models/user.js';
 import generateToken from '../utils/generateToken.js';
 
 export const userRegister = asyncHandler(async (req, res, next) => {
-  const { email, password, confirmPasword } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
-  if (password !== confirmPasword) {
+  if (password !== confirmPassword) {
     res.status(400)
     throw new Error(`password and confirm password not match`)
   }
@@ -31,7 +31,10 @@ export const userRegister = asyncHandler(async (req, res, next) => {
       _id: user._id,
       eamil: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id)
+      token: generateToken({
+        _id: user._id, eamil: user.email,
+        isAdmin: user.isAdmin
+      })
     })
 });
 
@@ -50,6 +53,9 @@ export const userLogin = asyncHandler(async (req, res, next) => {
       _id: user._id,
       eamil: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id)
+      token: generateToken({
+        _id: user._id, eamil: user.email,
+        isAdmin: user.isAdmin
+      })
     })
 })
