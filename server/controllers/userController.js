@@ -58,4 +58,9 @@ export const userLogin = asyncHandler(async (req, res, next) => {
         isAdmin: user.isAdmin
       })
     })
-})
+});
+
+export const userProfile = asyncHandler(async (req, res, next) => {
+  res.status(200)
+    .json({ test: 'Profile protected route test' })
+});
